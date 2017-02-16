@@ -57,7 +57,7 @@ UserSchema.methods.comparePassword = (candidatePassword, cb) => {
 	});
 };
 
-UserSchema.methods.generateToken = cb => {
+/*UserSchema.methods.generateToken = cb => {
 	let user = this;
 	user.revokeToken( err => {
 		if (err) {
@@ -81,6 +81,6 @@ UserSchema.methods.revokeToken = cb => {
 	return user.save( err => {
 		return cb(err);
 	});
-};
+};*/
 
 module.exports = mongoose.model('User', UserSchema);
