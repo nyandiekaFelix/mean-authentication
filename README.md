@@ -1,1 +1,1 @@
-# mean-authentication
+MEAN app authentication starter pack.
