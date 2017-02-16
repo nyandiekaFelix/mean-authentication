@@ -15,22 +15,13 @@ const UserSchema = new Schema({
 		required: true,
 		unique: true
 	},
-	profile: {
+	/*profile: {
 	    firstName: { type: String },
 	    lastName: { type: String }
-	},
-	role: {
-		type: Schema.Types.ObjectId,
-		ref: 'Role',
-		required: true
-	},
+	},*/
 	password: {
 		type: String,
 		required: true
-	},
-	token: {
-		type: String,
-		default: ''
 	}
 });
 
