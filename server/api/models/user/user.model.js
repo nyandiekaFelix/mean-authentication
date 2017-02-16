@@ -19,11 +19,11 @@ const UserSchema = new Schema({
 	    firstName: { type: String },
 	    lastName: { type: String }
 	},
-	/*role: {
-		type: String,
-		enum: ['Member', 'Client', 'Admin'],
-		default: 'client'
-	},*/
+	role: {
+		type: Schema.Types.ObjectId,
+		ref: 'Role',
+		required: true
+	},
 	password: {
 		type: String,
 		required: true
