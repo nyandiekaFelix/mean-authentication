@@ -1,6 +1,6 @@
 module.exports = {  
   // Secret key for JWT signing and encryption
-  'secret': 'super secret passphrase',
+  'secret': process.env.SECRET,
   'database': 'mongodb://localhost:27017/mean-auth-starter',
   
 }
