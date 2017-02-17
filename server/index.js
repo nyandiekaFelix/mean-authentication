@@ -9,6 +9,7 @@ mongoose.connect(config.database);
 
 // start the server
 app.listen(PORT, () => {
-  	console.log(`Magic on localhost ${PORT}`);
+  	console.log(`Magic on localhost:${PORT}`);
 });
+
 
