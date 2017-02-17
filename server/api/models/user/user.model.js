@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
+const secret = require('../../../config/main.js').secret;
+ 
+
 const UserSchema = new Schema({
 	username: {
 		type: String,
@@ -57,30 +60,17 @@ UserSchema.methods.comparePassword = (candidatePassword, cb) => {
 	});
 };
 
-/*UserSchema.methods.generateToken = cb => {
-	let user = this;
-	user.revokeToken( err => {
-		if (err) {
-			return cb(err);
-		}
+UserSchema.methods.generateToken = cb => {
+	const expiry = new Date();
+	expiry.setDate(expiry.getDate() + 7);
 
-		user.token = jwt.sign(user, 'secret', {
-			expiresInSeconds: 100000
-		});
-
-		return user.save( err => {
-			return cb(err, user);
-		});
-	});
+	return jwt.sign({
+		_id: this._id,
+		email: this.email,
+		username: this.username,
+		exp: parseInt(expiry.getTime() / 1000)
+	}, secret);
 };
 
-UserSchema.methods.revokeToken = cb => {
-	let user = this;
-	user.token = '';
-
-	return user.save( err => {
-		return cb(err);
-	});
-};*/
 
 module.exports = mongoose.model('User', UserSchema);
