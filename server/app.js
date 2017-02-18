@@ -9,7 +9,6 @@ const cookieParser = require('cookie-parser');
 require('./api/models/db.js');
 require('./config/passport.config.js')(passport);
 
-const apiRoutes = require('./api/routes/api.js');
 
 const app = express();
 
@@ -22,9 +21,23 @@ app.use(cookieParser());
 
 app.use(passport.initialize());
 
-app.use('/api', apiRoutes);
+const apiRoutes = require('./api/routes/index.js');
+app.use('/', apiRoutes);
 
-// app.use(passport.session());
+app.use( (req, res) => {
+    res.sendFile(path.join(__dirname, '../client', 'index.html'));
+});
+
+/*
+ * Unauthorozed Errors
+ */
+app.use( (err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({
+            message: `${err.name} : ${err.message}`
+        });
+    }
+});
 
 /* development error handler
  * will print stacktrace
