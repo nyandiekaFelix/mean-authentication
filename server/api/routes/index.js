@@ -5,7 +5,7 @@ router.get('/', (req, res) => {
  	res.status(200).json({ message: 'Api Connected!' });
 });
 
-router.use('/users', userRoutes);
+router.use('/account', userRoutes);
 
 module.exports = router;
 
