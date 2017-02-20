@@ -1,9 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="meanAuthStarter">
 <head>
-	<title>Mean Auth</title>
+	<meta charset="utf-8">
+	<title>MEAN Auth</title>
+	<base href="/">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<!-- DEPENDENCIES -->
+	<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+	<script type="text/javascript" src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<!-- <script type="text/javascript" src="/bower_components/angular-resource/angular-resource.min.js"></script> -->
+
 </head>
 <body>
-	<h1> Mean Auth</h1>
+	
+
+	<div class="content">
+	    <div ui-view></div>
+	</div>
+
+	<script type="text/javascript" src="app/main.js"></script>
+	<script type="text/javascript" src="app/common/services/auth.service.js"></script>
+	<script type="text/javascript" src="app/auth/signup/controllers/signup.controller.js"></script>
+	
 </body>
 </html>
