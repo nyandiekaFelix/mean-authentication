@@ -2,7 +2,7 @@ const path = require('path');
 const logger = require('morgan');
 const express = require('express');
 const passport = require('passport');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
@@ -13,6 +13,7 @@ require('./config/passport.config.js')(passport);
 const app = express();
 
 app.use(express.static(path.join(__dirname, '../client')));
+app.use('/bower_components', express.static( path.dirname(__dirname) + '/bower_components'));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -23,6 +24,7 @@ app.use(passport.initialize());
 
 const apiRoutes = require('./api/routes/index.js');
 app.use('/', apiRoutes);
+
 
 app.use( (req, res) => {
     res.sendFile(path.join(__dirname, '../client', 'index.html'));
@@ -62,4 +64,5 @@ app.use((err, req, res, next) => {
         error: {}
     });
 });
+
 module.exports = app;
