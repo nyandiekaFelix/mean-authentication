@@ -65,6 +65,16 @@
 		function deleteToken(token) {
 			$window.localStorage.removeItem('auth-token');
 		}
+
+		return {
+			saveToken: saveToken,
+			getToken: getToken,
+			isLoggedIn: isLoggedIn,
+			getUserDetails: getUserDetails,
+			signupUser: signupUser,
+			loginUser: loginUser,
+			deleteToken: deleteToken
+		};
 	}
 
 	angular.module('meanAuthStarter.auth', [])
