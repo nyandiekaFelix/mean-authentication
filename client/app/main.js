@@ -12,7 +12,7 @@ app.config(($stateProvider, $urlRouterProvider) => {
 		.state('home', {
 			url: '/',
 			templateUrl: 'app/home/home.html',
-			controller: 'homeCtrl'
+			// controller: 'homeCtrl'
 		})
 
 		.state('login', {
@@ -30,7 +30,17 @@ app.config(($stateProvider, $urlRouterProvider) => {
 		.state('profile', {
 			url: '/profile',
 			templateUrl: 'app/account/profile/profile.html',
-			controller: 'profileCtrl'
+			controller: 'profileCtrl',
+			module: 'private'
 		});
 });
+
+app.run(['$rootScope', '$state', 'authService', ($rootScope, $state, authService) => {
+	$rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+		if (toState.module === 'private' && !authService.isLoggedIn()) {
+			event.preventDefault();
+			$state.go('login');
+		}
+	});
+}])
 
