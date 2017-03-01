@@ -19,5 +19,5 @@
 		};
 	}
 	angular.module('meanAuthStarter.signup', [])
-	.controller('signupCtrl', ['authService', ]);
+	.controller('signupCtrl', ['authService', signupCtrl]);
 })();
