@@ -20,18 +20,17 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.16.1",
+    "bower": "^1.8.0",
     "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
     "express": "^4.14.1",
-    "express-jwt": "^5.1.0",
-    "express-session": "^1.15.1",
-    "jsonwebtoken": "^7.3.0",
-    "mongoose": "^4.8.3",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "serve-favicon": "^2.3.2"
+    "gravatar": "^1.6.0",
+    "jwt-simple": "^0.5.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "mongoose": "^4.8.3"
   },
   "devDependencies": {
-    "bower": "^1.8.0",
     "morgan": "^1.8.1",
     "nodemon": "^1.11.0"
   }
