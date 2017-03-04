@@ -1,23 +1,17 @@
 const router = require('express').Router();
-const jwt = require('express-jwt');
-const auth = jwt({
-	secret: 'SuperSecret',
-	userProperty: 'payload'
+const userCtrl = require('../controllers/user.controller.js');
+const token = require('../../config/token.js');
+
+router.get('/', (req, res) => {
+	res.status(200).json({ message: 'User route pinged' });
 });
 
-const profileCtrl = require('../controllers/profile.controller.js');
-const authCtrl = require('../controllers/auth.controller.js');
+router.post('/register', userCtrl.registerUser);
+router.post('/login', userCtrl.loginUser);
+
+router.get('/profile', token.ensureAuthenticated, userCtrl.getLoggedInUserDetails);
+router.put('/profile', token.ensureAuthenticated, userCtrl.updateLoggedInUserDetails);
 
 
-router.get('/', (req, res, next) => {
-	res.status(200).json({ message: 'User!' });
-});
-
-// profile
-router.get('/profile', auth, profileCtrl.viewProfile);
-
-// authentication
-router.post('/signup', authCtrl.signup);
-router.post('/login', authCtrl.login);
 
 module.exports = router;
