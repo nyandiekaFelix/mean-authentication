@@ -1,27 +1,20 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
-const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
-const secret = require('../../../config/main.js').secret;
- 
-
 const UserSchema = new Schema({
-	username: {
-		type: String,
-		required: true,
-		unique: true
-	},
+	username: { type: String },
 	email:{
 		type: String,
 		required: true,
-		unique: true
+		unique: true,
+		lowercase: true
 	},
-	/*profile: {
-	    firstName: { type: String },
-	    lastName: { type: String }
-	},*/
+	avatar:{
+		type:String,
+		default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png'
+	},
 	password: {
 		type: String,
 		required: true
@@ -51,26 +44,13 @@ UserSchema.pre('save', function (next) {
 });
 
 /* ---- Password Verification ---- */
-UserSchema.methods.comparePassword = (candidatePassword, cb) => {
+UserSchema.methods.comparePassword = (candidatePassword, done) => {
 	bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
 		if (err) {
-			return cb(err);
+			return done(err);
 		}
-		cb(null, isMatch);
+		done(null, isMatch);
 	});
 };
-
-UserSchema.methods.generateToken = cb => {
-	const expiry = new Date();
-	expiry.setDate(expiry.getDate() + 7);
-
-	return jwt.sign({
-		_id: this._id,
-		email: this.email,
-		username: this.username,
-		exp: parseInt(expiry.getTime() / 1000)
-	}, secret);
-};
-
 
 module.exports = mongoose.model('User', UserSchema);
