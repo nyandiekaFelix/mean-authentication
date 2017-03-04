@@ -1,10 +1,10 @@
 const app = require('./app.js');
-const config = require('./config/main.js');
+const config = require('./config/secrets.js');
 const mongoose = require('mongoose');
 
 
 const PORT = process.env.PORT || 7777;
-mongoose.connect(config.database);  
+mongoose.connect(config.db);  
 
 
 // start the server
