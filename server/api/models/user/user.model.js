@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
@@ -33,7 +33,7 @@ UserSchema.pre('save', function (next) {
 			return next(err);
 		}
 
-		bcrypt.hash(user.password, salt, null, (err, hash) => {
+		bcrypt.hash(user.password, salt, (err, hash) => {
 			if (err) {
 				return next(err);
 			}
@@ -44,12 +44,12 @@ UserSchema.pre('save', function (next) {
 });
 
 /* ---- Password Verification ---- */
-UserSchema.methods.comparePassword = (candidatePassword, done) => {
-	bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-		if (err) {
-			return done(err);
-		}
-		done(null, isMatch);
+UserSchema.methods.comparePassword = function(password, next) {
+	if (err) {
+		return next(err);
+	}
+	bcrypt.compare(password, this.password, function(err, isMatch) {
+		next(err, isMatch);
 	});
 };
 
