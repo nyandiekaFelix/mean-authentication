@@ -34,7 +34,34 @@ module.exports = {
 						message: err.message
 					});
 				}
-				res.send({ token: token.createJWT(result) });
+				res.send({ token: token.generateJWT(result) });
+			});
+		});
+	},
+
+	// Authenticate user using email and password before returning a token
+	loginUser: (req, res) => {
+		User.findOne({ email: req.body.email }, (err, user) => {
+			if (!user) {
+				return res.status(401).json({
+					message: 'Invalid email address'
+				});
+			}
+
+			user.comparePassword(req.body.password, (err, isMatch) => {
+				/*if (isMatch) {
+					return res.status(200).json({
+						message: 'Password matched'
+					});
+				}*/
+				console.log(req.body.password);
+				if (!isMatch) {
+					return res.status(401).json({
+						message: 'Invalid Password'
+					});
+				}
+
+				res.send({ token: token.generateJWT(user) });
 			});
 		});
 	},
@@ -65,25 +92,4 @@ module.exports = {
 			});
 		});
 	},
-
-	// Authenticate user using email and password before returning a token
-	loginUser: (req, res) => {
-		User.findOne({ email: req.body.email }, (err, user) => {
-			if (!user) {
-				return res.status(401).json({
-					message: 'Invalid email address'
-				});
-			}
-
-			user.comparePassword(req.body.password, (err, isMatch) =>{
-				if (!isMatch) {
-					return res.status(401).json({
-						message: 'Invalid Password'
-					});
-				}
-
-				res.send({ token: token.createJWT(user) });
-			});
-		});
-	}
 }
