@@ -10,7 +10,11 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../client')));
 app.use('/bower_components', express.static( path.dirname(__dirname) + '/bower_components'));
 
-app.use((req, res) => {
+/* 
+ * Handling angular requests
+ * Page changes will be handled on the front-end
+ */
+app.use('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
