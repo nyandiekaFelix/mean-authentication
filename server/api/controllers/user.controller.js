@@ -28,7 +28,7 @@ module.exports = {
 				avatar: avatarUrl
 			});
 
-			user.save( (err, result) => {
+			user.save((err, result) => {
 				if(err){
 					res.status(500).json({
 						message: err.message
@@ -49,12 +49,6 @@ module.exports = {
 			}
 
 			user.comparePassword(req.body.password, (err, isMatch) => {
-				/*if (isMatch) {
-					return res.status(200).json({
-						message: 'Password matched'
-					});
-				}*/
-				console.log(req.body.password);
 				if (!isMatch) {
 					return res.status(401).json({
 						message: 'Invalid Password'
@@ -69,6 +63,11 @@ module.exports = {
 	// Query database for current logged in user details
 	getLoggedInUserDetails: (req, res) => {
 		user.findById(req.user, (err, user) => {
+			if (err) {
+				res.send({ 
+					message : 'Getting user details was unsuccessful'
+				});
+			}
 			res.send(user);
 		});
 	},
