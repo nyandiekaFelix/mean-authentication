@@ -1,23 +1,15 @@
-(function () {
-	function loginCtrl (authService) {
-		const user = this;
-		user.details = {
-			email: '',
-			password: ''
-		};
+angular.module('meanAuthStarter.login', [])
+	.controller('loginCtrl', ['$scope', '$state', '$auth', 'toastr', loginCtrl]);
 
-		user.onSubmit = () => {
-			authService
-				.loginUser(user.details)
-				.error((err) => {
-					alert(err);
-				})
-				.then( () => {
-					state.go('profile');
-				});
-		};
-	}
-	angular.module('meanAuthStarter.login', [])
-	.controller('loginCtrl', ['authService', loginCtrl]);
-})();
-
+function loginCtrl($scope, $state, $auth, toastr) {
+	$scope.login = () => {
+		$auth.login($scope.user)
+			.then(() => {
+				toastr.success('Login Successful!!');
+				$state.go('home');
+			})
+			.catch((error) => {
+				toastr.error(error.data.message);
+			});
+	};
+}
