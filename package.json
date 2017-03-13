@@ -2,7 +2,6 @@
   "name": "mean-authentication",
   "version": "1.0.0",
   "description": "auth starter-pack",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/index.js"
@@ -18,7 +17,7 @@
   },
   "homepage": "https://github.com/nyandiekaFelix/mean-authentication#readme",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.16.1",
     "bower": "^1.8.0",
     "cookie-parser": "^1.4.3",
@@ -33,5 +32,8 @@
   "devDependencies": {
     "morgan": "^1.8.1",
     "nodemon": "^1.11.0"
+  },
+  "engines": {
+    "node": "7.4.0"
   }
 }
