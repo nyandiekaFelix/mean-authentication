@@ -1,18 +1,23 @@
-<navigation></navigation>
 <div class="jumbotron container">
-    <form ng-submit="user.onSubmit()">
-        <div class="form-group">
-            <label for="name">Username</label>
-            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="user.details.username">
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Sign up</h2>
+            <form method="post" role="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="username" ng-model="user.username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="extra" ng-model="user.eemail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Password">
+                </div>
+                <!-- <div class="form-group">
+                    <input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Confirm Password">
+                </div> -->
+                
+                <button type="submit" class="btn btn-default" ng-click="signup()">Submit</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="Email" ng-model="user.details.email">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.details.password">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+    </div>
 </div>

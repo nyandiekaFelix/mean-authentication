@@ -1,23 +1,16 @@
-(function () {
-	function signupCtrl(authService) {
-		const user = this;
-		user.details = {
-			username: '',
-			email: '',
-			password: ''
-		};
+angular.module('meanAuthStarter.signup', [])
+	.controller('signupCtrl', ['$scope', '$state', '$auth', 'toastr', signupCtrl]);
 
-		user.onSubmit = () => {
-			authService
-				.signupUser(user.details)
-				.error((err) => {
-					alert(err);
-				})
-				.then( () => {
-					state.go('profile');
-				});
-		};
-	}
-	angular.module('meanAuthStarter.signup', [])
-	.controller('signupCtrl', ['authService', signupCtrl]);
-})();
+function signupCtrl($scope, $state, $auth, toastr) {
+	$scope.signup = () => {
+		$auth.signup($scope.user)
+			.then((response) => {
+				$auth.setToken(response);
+				$state.go('home');
+				toastr.info('You have successfully registered your account')
+			})	
+			.catch((response) => {
+				toastr.error(response.data.message);
+			});
+	};
+}
