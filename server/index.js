@@ -3,13 +3,10 @@ const config = require('./config/secrets.js');
 const mongoose = require('mongoose');
 
 
-const PORT = process.env.PORT || 7777;
-mongoose.connect(config.db);  
-
+const PORT = config.port;
+mongoose.connect(config.database);
 
 // start the server
 app.listen(PORT, () => {
-  	console.log(`Magic on localhost:${PORT}`);
+    console.log(`Magic on localhost:${PORT}`);
 });
-
-
