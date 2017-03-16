@@ -1,46 +1,41 @@
-const jwt = require('jwt-simple');
+const jwt = require('jsonwebtoken');
 const secrets = require('./secrets.js');
-const moment = require('moment');
 
 module.exports = {
 
-	generateJWT: (user) => {
-		const payload = {
-			sub: user._id,
-			iat: moment().unix(), // Get unix timestamp using moment.js
-			exp: moment().add(14, 'days').unix()
-		};
+    generateJWT: (user) => {
+        return jwt.sign(user, secrets.TOKEN_SECRET, {
+            expiresIn: 60 * 60 * 24
+        })
+    },
 
-		return jwt.encode(payload, secrets.TOKEN_SECRET);
-	},
+    // Ensure user is authenticated in order to make protected api calls
+    ensureAuthenticated: (req, res, next) => {
+        if (!req.header('Authorization')) {
+            return req.status(401).send({
+                message: 'The request does not have an authorization header'
+            });
+        }
 
-	// Ensure user is authenticated in order to make protected api calls
-	ensureAuthenticated: (req, res, next) => {
-		if (!req.header('Authorization')) {
-			return req.status(401).send({
-				message: 'The request does not have an authorization header'
-			});
-		}
+        const token = req.header('Authorization').split(' ')[1];
+        let payload = null;
+        const timestamp = Math.round(new Date() / 1000);
 
-		const token = req.header('Authorization').split(' ')[1];
-		let payload = null; 
+        try {
+            payload = jwt.verify(token, secrets.TOKEN_SECRET);
+        } catch (err) {
+            return res.status(401).send({
+                message: err.message
+            });
+        }
 
-		try {
-			payload = jwt.decode(token, secrets.TOKEN_SECRET);
-		}
-		catch (err) {
-			return res.status(401).send({
-				message: err.message
-			});
-		}
+        if (payload.expiresIn <= timestamp) {
+            return res.status(401).json({
+                message: 'Token has expired'
+            });
+        }
 
-		if (payload.exp <= moment().unix()) {
-			return res.status(401).json({
-				message: 'Token has expired'
-			});
-		}
-
-		req.user = payload.sub;
-		next();
-	}
+        req.user = payload.sub;
+        next();
+    }
 }
