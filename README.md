@@ -10,6 +10,8 @@ You will need these tools before you start:
 
 [Mongodb](https://www.mongodb.com/)
 
+[Nodemon](https://nodemon.io)
+
 ### Getting Started
 
 - Clone this repo to your machine
