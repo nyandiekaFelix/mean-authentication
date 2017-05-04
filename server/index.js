@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const config = require('./config/secrets.js');
+const config = require('./config/secrets');
 const PORT = config.port;
 
 const app = express();
