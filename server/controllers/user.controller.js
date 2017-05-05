@@ -8,86 +8,91 @@ module.exports = {
 
     // create a new user and store details in db
     registerUser: (req, res) => {
-        User.findOne({ email: req.body.email }, (err, existingUser) => {
-            if (existingUser) {
-                return res.status(400).json({
-                    message: 'Email entered is already in use by another account'
-                });
-            }
-
-            const avatarUrl = gravatar.url(req.body.email, { s: '200', r: 'x', d: 'retro' }, true);
-            const user = new User({
-                username: req.body.username,
-                email: req.body.email,
-                password: req.body.password,
-                avatar: avatarUrl
-            });
-
-            user.save((err, result) => {
-                if (err) {
-                    res.status(500).json({
-                        message: err.message
+        User.findOne({ email: req.body.email })
+            .exec()
+            .then(existingUser => {
+                if (existingUser) {
+                    return res.status(400).json({
+                        message: 'Sorry, that email is already registered to another account'
                     });
                 }
-                res.status(201).send({
-                    token: token.generateJWT(user)
+
+                const avatarUrl = gravatar.url(req.body.email, { s: '200', r: 'x', d: 'retro' }, true);
+
+                const user = new User({
+                    username: req.body.username,
+                    email: req.body.email,
+                    password: req.body.password,
+                    avatar: avatarUrl
                 });
-            });
-        });
+
+                user.save((err) => {
+                    if (err) {
+                        res.status(500).send(err);
+                    }
+                    
+                    user.password = undefined;
+                    res.status(201).send({
+                        id_token: token.generateJWT(user),
+                        user: user
+                    });
+                });
+            })
+            .catch(err => res.status(500).json(err));
     },
 
     // Authenticate user using email and password before returning a token
     loginUser: (req, res) => {
-        User.findOne({ email: req.body.email }, (err, user) => {
-            if (!user) {
-                return res.status(401).json({
-                    message: 'Invalid email address'
-                });
-            }
-
-            user.comparePassword(req.body.password, (err, isMatch) => {
-                if (!isMatch) {
+        User.findOne({ email: req.body.email })
+            .exec()
+            .then(user => {
+                if (!user) {
                     return res.status(401).json({
-                        message: 'Invalid Password'
+                        message: 'Wrong email address'
                     });
                 }
 
-                res.status(201).send({
-                    token: token.generateJWT(user)
+                user.comparePassword(req.body.password, (err, ismatch) => {
+                    if (!ismatch) {
+                        return res.status(401).json({
+                            message: 'Wrong password'
+                        });
+                    }
+
+                    user.password = undefined;
+                    res.status(201).json({
+                        id_token: token.generateJWT(user),
+                        user: user
+                    });
                 });
-            });
-        });
+            })
+            .catch(err => res.status(500).json(err));
     },
 
     // Query database for current logged in user details
     getLoggedInUserDetails: (req, res) => {
-        User.findById(req.user, (err, user) => {
-            if (err) {
-                res.send({
-                    message: 'Getting user details was unsuccessful'
-                });
-            }
-            res.send(user);
-        });
+        User.findById(req.params.userId, '-password')
+            // .populate('books') 
+            .exec()
+            .then(user => {
+                if (!user) {
+                    return res.status(404).json({ message: 'User not found'});
+                }
+                return res.status(200).json(user);
+            })
+            .catch(err => res.status(500).json(err));
     },
 
     // Update logged in user's details
     updateLoggedInUserDetails: (req, res) => {
-        User.findById(req.user, (err, user) => {
-            if (!user) {
-                return res.status(400).send({
-                    message: 'User not found'
-                });
-            }
-
-            user.username = req.body.username || user.username;
-            user.email = req.body.email || user.email;
-
-            user.save((err) => {
-                res.status(200).send({
-                    message: 'Profile updated successfully'
-                });
-            });
-        });
+         User.findOneAndUpdate(req.params.userId)
+            .exec()
+            .then(user => {
+                if (!user) {
+                    return res.status(404).json({message: 'User not found'});
+                }
+                return res.status(200).json(user);
+            })
+            .catch(err => res.status(500).json(err));
     }
 }
