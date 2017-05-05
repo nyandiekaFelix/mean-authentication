@@ -70,7 +70,7 @@ module.exports = {
     },
 
     // Query database for current logged in user details
-    getLoggedInUserDetails: (req, res) => {
+    getOneUser: (req, res) => {
         User.findById(req.params.userId, '-password')
             // .populate('books') 
             .exec()
@@ -84,7 +84,7 @@ module.exports = {
     },
 
     // Update logged in user's details
-    updateLoggedInUserDetails: (req, res) => {
+    updateUser: (req, res) => {
          User.findOneAndUpdate(req.params.userId)
             .exec()
             .then(user => {
