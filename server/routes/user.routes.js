@@ -1,17 +1,17 @@
 const router = require('express').Router();
-const userCtrl = require('../controllers/user.controller.js');
-const token = require('../../config/token.js');
+const userCtrl = require('../controllers/user.controller');
+const token = require('../../config/token');
 
 router.get('/', (req, res) => {
-	res.status(200).json({ message: 'User route pinged' });
+	res.status(200).json({ message: 'User route works' });
 });
 
 router.post('/register', userCtrl.registerUser);
 router.post('/login', userCtrl.loginUser);
 
-router.get('/profile', token.ensureAuthenticated, userCtrl.getLoggedInUserDetails);
-router.put('/profile', token.ensureAuthenticated, userCtrl.updateLoggedInUserDetails);
-
+router.route('/profile/:userId')
+	  .get(userCtrl.getOneUser)
+	  .put(userCtrl.updateUser);
 
 
 module.exports = router;
