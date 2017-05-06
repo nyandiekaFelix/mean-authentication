@@ -18,7 +18,14 @@ const UserSchema = new Schema({
 	password: {
 		type: String,
 		required: true
-	}
+	},
+	roles: {
+		type: String,
+		enum: ['Guest', 'User', 'Admin'],
+		default: 'Guest'
+	},
+	resetPasswordToken: { type: String },
+  	resetPasswordExpires: { type: Date }
 });
 
 /* ---- Password Hashing ---- */
