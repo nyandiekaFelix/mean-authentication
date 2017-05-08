@@ -1,3 +1,4 @@
+const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
@@ -5,26 +6,59 @@ const LocalStrategy = require('passport-local');
 const config = require('./env');
 const User = require('../models/user.model');
 
-module.exports = (passport) => {
-    let options = {
-        jwtFromRequest: ExtractJwt.fromAuthHeader(),
-        secretOrKey: config.TOKEN_SECRET
-    };
+const localOptions = {
+    usernameield: 'email'
+};
 
-    passport.use(new JwtStrategy(options, (jwt_payload, next) => {
-        User.findOne({id: jwt_payload.sub})
-            .exec()
-            .then(user => {
-                if (user) {
-                    return next(null, user);
-                } else {
-                    return next(null, false);
-                    //or create a new account
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeader(),
+    secretOrKey: config.TOKEN_SECRET
+};
+
+const localLogin = new LocalStrategy(localOptions, (email, password, next) => {
+    User.findOne({ email })
+        .exec()
+        .then(user => {
+            if (!user) {
+                return next(null, false, {
+                    error: 'User not found'
+                });
+            }
+
+            user.comparePassword(password, (err, isMatch) => {
+                if (err) { return next(err); }
+
+                if (!ismatch) {
+                    return res.status(401).json({
+                        message: 'Wrong password'
+                    });
                 }
-            })
-            .catch(err => {
-                return next(err, false);
+
+                return next(null, user);
             });
-    }));
-   
-}
+        })
+        .catch(err => {
+            return next(err, false);
+        });
+});
+
+const jwtLogin = new JwtStrategy(jwtOptions, (payload, next) => {
+    User.findOne(payload._id)
+        .exec()
+        .then(user => {
+            if (!user) {
+                return next(null, false, {
+                    error: 'User not found'
+                });
+            }
+
+            return next(null, user);
+            //or create a new account
+        })
+        .catch(err => {
+            return next(err, false);
+        });
+});
+
+passport.use(localLogin);
+passport.use(jwtLogin);
