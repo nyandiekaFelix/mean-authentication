@@ -43,7 +43,7 @@ module.exports = {
             })
             .catch(err => res.status(500).json(err));
     },
-    
+
     loginUser: (req, res) => {
         User.findOne({ email: req.body.email })
             .exec()
@@ -55,6 +55,10 @@ module.exports = {
                 }
 
                 user.comparePassword(req.body.password, (err, ismatch) => {
+                    if (err) {
+                        return res.status(401).send(err);
+                    }
+                    
                     if (!ismatch) {
                         return res.status(401).json({
                             message: 'Wrong password'
@@ -62,7 +66,7 @@ module.exports = {
                     }
 
                     user.password = undefined;
-                    res.status(201).json({
+                    res.status(200).json({
                         id_token: token.generateJWT(user),
                         user: user
                     });
