@@ -5,7 +5,7 @@ const User = require('../models/user.model');
 
 function generateJWT(user) {
     return jwt.sign(user, config.TOKEN_SECRET, {
-        expiresIn: 600000 // in seconds
+        expiresIn: 10080 // in seconds
     });
 }
 
@@ -36,7 +36,7 @@ module.exports = {
                     
                     user.password = undefined;
                     res.status(201).send({
-                        id_token: token.generateJWT(user),
+                        id_token: generateJWT(user),
                         user: user
                     });
                 });
@@ -58,7 +58,7 @@ module.exports = {
                     if (err) {
                         return res.status(401).send(err);
                     }
-                    
+
                     if (!ismatch) {
                         return res.status(401).json({
                             message: 'Wrong password'
@@ -67,7 +67,7 @@ module.exports = {
 
                     user.password = undefined;
                     res.status(200).json({
-                        id_token: token.generateJWT(user),
+                        id_token: generateJWT(user),
                         user: user
                     });
                 });
