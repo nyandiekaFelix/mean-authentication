@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const config = require('./config/secrets');
+const config = require('./config/env');
 const PORT = config.port;
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const apiRoutes = require('./api/routes/index.js');
+const apiRoutes = require('./routes/index.js');
 app.use('/api', apiRoutes);
 
 mongoose.connect(config.database);
