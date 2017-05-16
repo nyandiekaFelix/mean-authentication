@@ -1,13 +1,25 @@
 const jwt =  require('jsonwebtoken');
+const gravatar = require('gravatar');
 
 const config = require('../config/env');
 const User = require('../models/user.model');
 
 function generateJWT(user) {
     return jwt.sign(user, config.TOKEN_SECRET, {
-        expiresIn: 10080 // in seconds
+        expiresIn: 10080 // a week in seconds
     });
 }
+
+function setUserInfo(info) {
+    let getUserInfo = {
+        _id: info._id,
+        email: info.email,
+        avatar: info.avatar/*,
+        role: info.role*/
+    };
+
+    return getUserInfo;
+} 
 
 module.exports = {
      registerUser: (req, res) => {
@@ -19,7 +31,7 @@ module.exports = {
                         message: 'Sorry, that email is already registered to another account'
                     });
                 }
-
+                
                 const avatarUrl = gravatar.url(req.body.email, { s: '200', r: 'x', d: 'retro' }, true);
 
                 const user = new User({
@@ -29,15 +41,16 @@ module.exports = {
                     avatar: avatarUrl
                 });
 
+                
                 user.save((err) => {
                     if (err) {
                         res.status(500).send(err);
                     }
                     
-                    user.password = undefined;
+                    const userInfo = setUserInfo(user);
                     res.status(201).send({
-                        id_token: generateJWT(user),
-                        user: user
+                        id_token: generateJWT(userInfo),
+                        user: userInfo
                     });
                 });
             })
@@ -65,10 +78,10 @@ module.exports = {
                         });
                     }
 
-                    user.password = undefined;
-                    res.status(200).json({
-                        id_token: generateJWT(user),
-                        user: user
+                    const userInfo = setUserInfo(user);
+                    res.status(201).send({
+                        id_token: generateJWT(userInfo),
+                        user: userInfo
                     });
                 });
             })
