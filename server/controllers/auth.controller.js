@@ -35,7 +35,10 @@ module.exports = {
                 const avatarUrl = gravatar.url(req.body.email, { s: '200', r: 'x', d: 'retro' }, true);
 
                 const user = new User({
-                    username: req.body.username,
+                    profile: {
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName
+                    },
                     email: req.body.email,
                     password: req.body.password,
                     avatar: avatarUrl
