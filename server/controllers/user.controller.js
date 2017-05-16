@@ -1,6 +1,6 @@
 const gravatar = require('gravatar');
 
-const User = require('../models/user/user.model');
+const User = require('../models/user.model');
 
 module.exports = {
     // Query database for a user's details
