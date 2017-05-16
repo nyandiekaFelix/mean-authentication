@@ -10,11 +10,11 @@ function generateJWT(user) {
     });
 }
 
-function setUserInfo(info) {
+function setUserInfo(account) {
     let getUserInfo = {
-        _id: info._id,
-        email: info.email,
-        avatar: info.avatar/*,
+        _id: account._id,
+        email: account.email,
+        avatar: account.avatar/*,
         role: info.role*/
     };
 
