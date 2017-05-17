@@ -11,7 +11,7 @@ const jwtOptions = {
 };
 
 const jwtAuth = new JwtStrategy(jwtOptions, (payload, next) => {
-    User.findOne(payload._id)
+    User.findOne({ id: payload.id })
         .exec()
         .then(user => {
             if (!user) {
