@@ -43,7 +43,7 @@ module.exports = {
                     
                     const detailsToReturn = helpers.setUserInfo(user);
                     res.status(201).send({
-                        id_token: generateJWT(detailsToReturn),
+                        id_token: `JWT ${generateJWT(detailsToReturn)}`,
                         user: detailsToReturn
                     });
                 });
@@ -74,7 +74,7 @@ module.exports = {
 
                     const detailsToReturn = helpers.setUserInfo(user);
                     res.status(201).send({
-                        id_token: generateJWT(detailsToReturn),
+                        id_token: `JWT ${generateJWT(detailsToReturn)}`,
                         user: detailsToReturn
                     });
                 });
