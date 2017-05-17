@@ -5,8 +5,14 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
 	profile: { 
-		firstName: { type: String },
-		lastName:{ type: String } 
+		firstName: { 
+			type: String,
+			required: true
+		},
+		lastName:{ 
+			type: String,
+			required: true
+		} 
 	},
 	email:{
 		type: String,
@@ -22,7 +28,7 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	roles: {
+	role: {
 		type: String,
 		enum: ['Guest', 'User', 'Admin'],
 		default: 'Guest'
