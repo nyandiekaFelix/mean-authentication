@@ -4,22 +4,13 @@ const gravatar = require('gravatar');
 const config = require('../config/env');
 const User = require('../models/user.model');
 
+const helpers = require('../helpers');
+
 function generateJWT(user) {
     return jwt.sign(user, config.TOKEN_SECRET, {
         expiresIn: 10080 // a week in seconds
     });
 }
-
-function setUserInfo(account) {
-    let getUserInfo = {
-        _id: account._id,
-        email: account.email,
-        avatar: account.avatar/*,
-        role: info.role*/
-    };
-
-    return getUserInfo;
-} 
 
 module.exports = {
      registerUser: (req, res) => {
@@ -50,10 +41,10 @@ module.exports = {
                         res.status(500).send(err);
                     }
                     
-                    const userInfo = setUserInfo(user);
+                    const detailsToReturn = helpers.setUserInfo(user);
                     res.status(201).send({
-                        id_token: generateJWT(userInfo),
-                        user: userInfo
+                        id_token: generateJWT(detailsToReturn),
+                        user: detailsToReturn
                     });
                 });
             })
@@ -81,10 +72,10 @@ module.exports = {
                         });
                     }
 
-                    const userInfo = setUserInfo(user);
+                    const detailsToReturn = helpers.setUserInfo(user);
                     res.status(201).send({
-                        id_token: generateJWT(userInfo),
-                        user: userInfo
+                        id_token: generateJWT(detailsToReturn),
+                        user: detailsToReturn
                     });
                 });
             })
