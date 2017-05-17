@@ -1,12 +1,15 @@
 const router = require('express').Router();
+const passport = require('passport');
+
 const userCtrl = require('../controllers/user.controller');
+const passportService = require('../config/passport');
 
-router.get('/', (req, res) => {
-	res.status(200).json({ message: 'User route works' });
-});
+const requireAuth = passport.authenticate('jwt', { session: false });
 
-router.route('/profile/:userId')
-	  .get(userCtrl.getOneUser)
-	  .put(userCtrl.updateUser);
+router.get('/', userCtrl.getAllUsers);
+
+router.route('/:userId')
+	  .get(requireAuth, userCtrl.getOneUser)
+	  .put(requireAuth, userCtrl.updateUser);
 
 module.exports = router;
