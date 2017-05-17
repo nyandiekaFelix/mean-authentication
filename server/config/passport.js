@@ -1,7 +1,6 @@
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const LocalStrategy = require('passport-local');
 
 const config = require('./env');
 const User = require('../models/user.model');
@@ -11,7 +10,7 @@ const jwtOptions = {
     secretOrKey: config.TOKEN_SECRET
 };
 
-const jwtLogin = new JwtStrategy(jwtOptions, (payload, next) => {
+const jwtAuth = new JwtStrategy(jwtOptions, (payload, next) => {
     User.findOne(payload._id)
         .exec()
         .then(user => {
@@ -28,4 +27,4 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, next) => {
         });
 });
 
-passport.use(jwtLogin);
+passport.use(jwtAuth);
