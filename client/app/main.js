@@ -13,10 +13,10 @@ const app = angular.module('meanAuthStarter', ['ui.router',
 app.config(['$authProvider', '$httpProvider', defaultConfig]);
 
 function defaultConfig($authProvider, $httpProvider) {
-    $authProvider.baseUrl = '/';
-    $authProvider.loginUrl = '/api/user/login';
-    $authProvider.signupUrl = '/api/user/register';
+    $authProvider.baseUrl = '/api/auth';
+    $authProvider.loginUrl = '/login';
+    $authProvider.signupUrl = '/register';
     $authProvider.authHeader = 'Authorization';
-    $authProvider.authToken = 'Bearer';
+    $authProvider.authToken = 'JWT';
     $authProvider.storageType = 'localStorage';
 }
