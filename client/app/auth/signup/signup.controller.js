@@ -5,12 +5,12 @@ function signupCtrl($scope, $state, $auth, toastr) {
 	$scope.signup = () => {
 		$auth.signup($scope.user)
 			.then((response) => {
-				$auth.setToken(response);
+				$auth.setToken(response.data.id_token);
+				toastr.success('You have successfully registered your account');
 				$state.go('home');
-				toastr.info('You have successfully registered your account')
 			})	
 			.catch((response) => {
-				toastr.error(response.data.message);
+				toastr.error(response.data);
 			});
 	};
 }

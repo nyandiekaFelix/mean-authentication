@@ -4,7 +4,8 @@ angular.module('meanAuthStarter.login', [])
 function loginCtrl($scope, $state, $auth, toastr) {
 	$scope.login = () => {
 		$auth.login($scope.user)
-			.then(() => {
+			.then((response) => {
+				$auth.setToken(response.data.id_token);
 				toastr.success('Login Successful!!');
 				$state.go('home');
 			})
