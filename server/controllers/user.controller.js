@@ -1,11 +1,9 @@
-const gravatar = require('gravatar');
-
 const User = require('../models/user.model');
 const helpers = require('../helpers');
 
 module.exports = {
     getAllUsers: (req, res) => {
-        User.find({})
+        User.find({}, '-password')
             .exec()
             .then(users => {
                 if (!users) {
