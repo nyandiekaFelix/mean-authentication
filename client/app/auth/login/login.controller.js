@@ -10,7 +10,7 @@ function loginCtrl($scope, $state, $auth, toastr) {
 				$state.go('home');
 			})
 			.catch((error) => {
-				toastr.error(error.data.message);
+				toastr.error(error.data.err);
 			});
 	};
 }

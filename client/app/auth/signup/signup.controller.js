@@ -10,7 +10,7 @@ function signupCtrl($scope, $state, $auth, toastr) {
 				$state.go('home');
 			})	
 			.catch((response) => {
-				toastr.error(response.data);
+				toastr.error(response.data.err);
 			});
 	};
 }
