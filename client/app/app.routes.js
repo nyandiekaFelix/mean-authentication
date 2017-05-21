@@ -52,7 +52,7 @@ function routes($stateProvider, $urlRouterProvider, $locationProvider) {
 
 		.state('profile', {
 			url: '/profile',
-			templateUrl: 'app/account/profile/profile.html',
+			templateUrl: 'app/profile/profile.html',
 			controller: 'profileCtrl',
 			resolve: { loginRequired: loginRequired }
 		})

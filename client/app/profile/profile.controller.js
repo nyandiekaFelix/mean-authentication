@@ -9,7 +9,7 @@ function profileCtrl($scope, $http, toastr, profileFactory) {
 				$scope.user = response.data;
 			})
 			.catch((response) => {
-				toastr.error(response.data,message);
+				toastr.error(response.data.err);
 			});
 	};
 
@@ -19,7 +19,7 @@ function profileCtrl($scope, $http, toastr, profileFactory) {
 				toastr.success('Profile Updated!');
 			})
 			.catch((response) => {
-				toastr.error(response.data.message);
+				toastr.error(response.data.err);
 			});
 	};
 
