@@ -8,7 +8,7 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/', userCtrl.getAllUsers);
 
-router.route('/:userId')
+router.route('/profile')
 	  .get(requireAuth, userCtrl.getOneUser)
 	  .put(requireAuth, userCtrl.updateUser);
 
