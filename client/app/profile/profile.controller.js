@@ -1,15 +1,15 @@
 angular.module('meanAuthStarter.profile')
-	.controller('profileCtrl', ['$scope', '$http', 'toastr', 'profileFactory', profileCtrl]);
+	.controller('profileCtrl', ['$scope', '$q', 'toastr', 'profileFactory', profileCtrl]);
 
-function profileCtrl($scope, $http, toastr, profileFactory) {
+function profileCtrl($scope, $q, toastr, profileFactory) {
 
 	$scope.getProfile = () => {
 		profileFactory.getProfile()
-			.then((response) => {
-				$scope.user = response.data;
+			.then((user) => {
+				$scope.user = user;
 			})
-			.catch((response) => {
-				toastr.error(response.data.err);
+			.catch((error) => {
+				toastr.error(error);
 			});
 	};
 
