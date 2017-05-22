@@ -17,7 +17,7 @@ module.exports = {
     },
 
     getOneUser: (req, res) => {
-        User.findById(req.params.userId)
+        User.findById(req.user)
             .exec()
             .then(user => {
                 if (!user) {
