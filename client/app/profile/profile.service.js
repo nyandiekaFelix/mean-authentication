@@ -1,21 +1,21 @@
 angular.module('meanAuthStarter.profile', [])
-	.factory('profileFactory', ['$http', function($http){
-		let currentUser = undefined;
-
+	.factory('profileFactory', ['$q', '$http', function($q, $http){
+		
 		return {
 			setProfile: (user) => {
 				if (user) {
-					currentUser = user;
+					window.localStorage['currentUser'] = angular.toJson(user);
 				}
 			},
 
-			getProfile: (profile) => {
+			getProfile: () => {
 				const deferred = $q.defer();
-				if (angular.isDefined(currentUser)) {
-					deferred.resolve(currentUser);
-					return deferred.promise;
-				}
-			}
+				const currentUser = angular.fromJson(window.localStorage['currentUser']);
+				deferred.resolve(currentUser);
+				return deferred.promise;
+			},
+
+			// updateProfile: () => {}
 			
 		};
 	}]);
