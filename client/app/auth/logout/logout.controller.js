@@ -9,6 +9,7 @@ function logoutCtrl($state, $auth, toastr) {
 
 	$auth.logout()
 		.then(() => {
+			window.localStorage.removeItem('currentUser');
 			toastr.info('You have been logged out!');
 			$state.go('login');
 		});
