@@ -3,7 +3,7 @@ const helpers = require('../helpers');
 
 module.exports = {
     getAllUsers: (req, res) => {
-        User.find({}, '-password')
+        User.find({})
             .exec()
             .then(users => {
                 if (!users) {
@@ -11,7 +11,16 @@ module.exports = {
                         message: 'No users found'
                     });
                 }
-                return res.status(200).json(users);
+                const usersToReturn = [];
+
+                users.forEach((user) => {
+                    const userDetails = helpers.setUserInfo(user);
+                    usersToReturn.push(userDetails);
+                });
+
+                return res.status(200).json({
+                    users: usersToReturn
+                });
             })
             .catch(err => res.status(500).json(err));
     },
