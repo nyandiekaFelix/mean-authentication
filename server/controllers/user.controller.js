@@ -44,16 +44,34 @@ module.exports = {
     },
 
     updateUser: (req, res) => {
-         User.findOneAndUpdate(req.params.userId)
+        User.findById(req.params.userId)
             .exec()
             .then(user => {
                 if (!user) {
-                    return res.status(404).json({message: 'User not found'});
+                    return res.status(404).json({
+                        message: 'User not found'
+                    });
                 }
 
-                const userToReturn = helpers.setUserInfo(user);
-                return res.status(200).json({
-                    user: userToReturn
+                updatedUser = {
+                    profile: {
+                        firstName: req.body.firstName || 
+                        user.profile.firstName,
+                        lastName: req.body.lastName || 
+                        user.profile.lastName
+                    },
+                    email: req.body.email || user.email
+                };
+
+                return Object.assign(user, updatedUser);
+            })
+            .then(user => {
+                return user.save();
+            })
+            .then(updatedDoc => {
+                const detailsToReturn = helpers.setUserInfo(updatedDoc);
+                res.status(200).json({
+                    user: detailsToReturn
                 });
             })
             .catch(err => res.status(500).json(err));
