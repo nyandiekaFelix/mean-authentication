@@ -53,7 +53,7 @@ module.exports = {
                     });
                 }
 
-                updatedUser = {
+                const updatedUser = {
                     profile: {
                         firstName: req.body.firstName || 
                         user.profile.firstName,
