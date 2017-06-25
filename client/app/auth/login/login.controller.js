@@ -11,7 +11,7 @@ function loginCtrl($scope, $state, $auth, toastr, profileFactory) {
 				$state.go('home');
 			})
 			.catch((response) => {
-				toastr.error(response.err);
+				toastr.error(response.data.err);
 			});
 	};
 }

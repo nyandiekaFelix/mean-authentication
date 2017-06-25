@@ -8,7 +8,7 @@ module.exports = {
             .then(users => {
                 if (!users) {
                     return res.status(404).json({
-                        message: 'No users found'
+                        err: 'No users found'
                     });
                 }
                 const usersToReturn = [];
@@ -22,7 +22,9 @@ module.exports = {
                     users: usersToReturn
                 });
             })
-            .catch(err => res.status(500).json(err));
+            .catch(err => res.status(500).json({
+                err: err 
+            }));
     },
 
     getOneUser: (req, res) => {
@@ -31,7 +33,7 @@ module.exports = {
             .then(user => {
                 if (!user) {
                     return res.status(404).json({ 
-                        message: 'User not found'
+                        err: 'User not found'
                     });
                 }
                 
@@ -40,7 +42,9 @@ module.exports = {
                     user: detailsToReturn
                 });
             })
-            .catch(err => res.status(500).json(err));
+            .catch(err => res.status(500).json({
+                err: err
+            }));
     },
 
     updateUser: (req, res) => {
@@ -49,7 +53,7 @@ module.exports = {
             .then(user => {
                 if (!user) {
                     return res.status(404).json({
-                        message: 'User not found'
+                        err: 'User not found'
                     });
                 }
 
@@ -74,6 +78,8 @@ module.exports = {
                     user: detailsToReturn
                 });
             })
-            .catch(err => res.status(500).json(err));
+            .catch(err => res.status(500).json({
+                err: err 
+            }));
     }
 }

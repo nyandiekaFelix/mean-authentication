@@ -19,7 +19,7 @@ module.exports = {
             .then(existingUser => {
                 if (existingUser) {
                     return res.status(400).json({
-                        message: 'Sorry, that email is already registered to another account'
+                        err: 'Sorry, that email is already registered to another account'
                     });
                 }
                 
@@ -38,7 +38,7 @@ module.exports = {
                 
                 user.save((err) => {
                     if (err) {
-                        res.status(500).send(err);
+                        res.status(500).json({ err: err });
                     }
                     
                     const detailsToReturn = helpers.setUserInfo(user);
@@ -48,7 +48,9 @@ module.exports = {
                     });
                 });
             })
-            .catch(err => res.status(500).json(err));
+            .catch(err => res.status(500).json({
+                err: err 
+            }));
     },
 
     loginUser: (req, res) => {
@@ -57,18 +59,20 @@ module.exports = {
             .then(user => {
                 if (!user) {
                     return res.status(401).json({
-                        message: 'Wrong email address'
+                        err: 'Wrong email address'
                     });
                 }
 
                 user.comparePassword(req.body.password, (err, ismatch) => {
                     if (err) {
-                        return res.status(401).send(err);
+                        return res.status(401).json({
+                            err: err 
+                        });
                     }
 
                     if (!ismatch) {
                         return res.status(401).json({
-                            message: 'Wrong password'
+                            err: 'Wrong password'
                         });
                     }
 
@@ -79,6 +83,8 @@ module.exports = {
                     });
                 });
             })
-            .catch(err => res.status(500).json(err));
+            .catch(err => res.status(500).json({
+                err: err 
+            }));
     }
 }
