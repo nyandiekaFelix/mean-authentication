@@ -10,6 +10,6 @@ router.get('/', userCtrl.getAllUsers);
 
 router.route('/:userId')
 	  .get(requireAuth, userCtrl.getOneUser)
-	  .put(userCtrl.updateUser);
+	  .put(requireAuth, userCtrl.updateUser);
 
 module.exports = router;
