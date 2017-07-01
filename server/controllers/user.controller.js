@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 
 module.exports = {
     getAllUsers: (req, res) => {
-        const _userProjections = '_id email profile avatar role password';
+        const _userProjections = '_id email profile avatar role';
         User.find({}, _userProjections)
             .exec()
             .then(users => {
