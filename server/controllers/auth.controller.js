@@ -13,7 +13,7 @@ function generateJWT(user) {
 }
 
 module.exports = {
-     registerUser: (req, res) => {
+    registerUser: (req, res) => {
         User.findOne({ email: req.body.email })
             .exec()
             .then(existingUser => {
@@ -77,7 +77,7 @@ module.exports = {
                     }
 
                     const detailsToReturn = helpers.setUserInfo(user);
-                    res.status(201).send({
+                    res.status(200).send({
                         id_token: `JWT ${generateJWT(detailsToReturn)}`,
                         user: detailsToReturn
                     });
