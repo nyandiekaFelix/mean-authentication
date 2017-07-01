@@ -5,6 +5,10 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
 	profile: { 
+		avatar:{
+			type:String,
+			default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png'
+		},
 		firstName: { 
 			type: String,
 			required: true
@@ -19,10 +23,6 @@ const UserSchema = new Schema({
 		required: true,
 		unique: true,
 		lowercase: true
-	},
-	avatar:{
-		type:String,
-		default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png'
 	},
 	password: {
 		type: String,

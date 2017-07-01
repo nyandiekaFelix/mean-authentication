@@ -3,9 +3,7 @@ module.exports = {
         let getUserInfo = {
             _id: account._id,
             email: account.email,
-            firstName: account.profile.firstName,
-            lastName: account.profile.lastName,
-            avatar: account.avatar,
+            profile: account.profile,
             role: account.role
         };
 
