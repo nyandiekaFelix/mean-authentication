@@ -1,9 +1,9 @@
 const User = require('../models/user.model');
-const helpers = require('../helpers');
 
 module.exports = {
     getAllUsers: (req, res) => {
-        User.find({})
+        const _userProjections = '_id email profile avatar role password';
+        User.find({}, _userProjections)
             .exec()
             .then(users => {
                 if (!users) {
@@ -11,15 +11,9 @@ module.exports = {
                         err: 'No users found'
                     });
                 }
-                const usersToReturn = [];
-
-                users.forEach((user) => {
-                    const userDetails = helpers.setUserInfo(user);
-                    usersToReturn.push(userDetails);
-                });
 
                 return res.status(200).json({
-                    users: usersToReturn
+                    users: users
                 });
             })
             .catch(err => res.status(500).json({
@@ -28,7 +22,8 @@ module.exports = {
     },
 
     getOneUser: (req, res) => {
-        User.findById(req.user)
+        const _userProjections = '_id email profile avatar role';
+        User.findById(req.params.userId, _userProjections)
             .exec()
             .then(user => {
                 if (!user) {
@@ -37,9 +32,8 @@ module.exports = {
                     });
                 }
                 
-                const detailsToReturn = helpers.setUserInfo(user);
                 return res.status(200).json({
-                    user: detailsToReturn
+                    user: user
                 });
             })
             .catch(err => res.status(500).json({
@@ -48,7 +42,8 @@ module.exports = {
     },
 
     updateUser: (req, res) => {
-        User.findById(req.params.userId)
+        const _userProjections = '_id email profile avatar role';
+        User.findById(req.params.userId, _userProjections)
             .exec()
             .then(user => {
                 if (!user) {
@@ -73,9 +68,8 @@ module.exports = {
                 return user.save();
             })
             .then(updatedDoc => {
-                const detailsToReturn = helpers.setUserInfo(updatedDoc);
                 res.status(200).json({
-                    user: detailsToReturn
+                    user:updatedDoc
                 });
             })
             .catch(err => res.status(500).json({
